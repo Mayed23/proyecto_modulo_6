@@ -1,0 +1,13 @@
+{% extends "core/base.html" %}
+{% block title %}Proyecto{% endblock %}
+
+{% block content %}
+<h2>{% if object %}Editar Proyecto{% else %}Nuevo Proyecto{% endif %}</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="{% url 'proyecto_list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

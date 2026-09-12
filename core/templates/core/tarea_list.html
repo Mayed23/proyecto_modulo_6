@@ -1,0 +1,47 @@
+{% extends "core/base.html" %}
+{% block title %}Tareas{% endblock %}
+
+{% block content %}
+<h2>Tareas de "{{ proyecto.nombre }}"</h2>
+<a href="{% url 'proyecto_list' %}" class="btn btn-outline-secondary mb-3">← Volver a proyectos</a>
+<a href="{% url 'tarea_create' proyecto.id %}" class="btn btn-primary mb-3">+ Nueva Tarea</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Estado</th>
+            <th>Prioridad</th>
+            <th>Fecha límite</th>
+            <th>Asignado a</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tarea in tareas %}
+        <tr>
+            <td>{{ tarea.titulo }}</td>
+            <td>
+                <span class="badge
+                    {% if tarea.estado == 'completada' %}bg-success
+                    {% elif tarea.estado == 'en_progreso' %}bg-warning
+                    {% else %}bg-secondary{% endif %}">
+                    {{ tarea.get_estado_display }}
+                </span>
+            </td>
+            <td>{{ tarea.get_prioridad_display }}</td>
+            <td>{{ tarea.fecha_limite|date:"d/m/Y"|default:"Sin fecha" }}</td>
+            <td>{{ tarea.asignado_a|default:"Sin asignar" }}</td>
+            <td>
+                <a href="{% url 'tarea_update' tarea.id %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'tarea_delete' tarea.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No hay tareas en este proyecto.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

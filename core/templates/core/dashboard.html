@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h2>Bienvenido, {{ user.username }}</h2>
+<p>Tienes {{ proyectos.count }} proyecto(s).</p>
+
+<a href="{% url 'proyecto_create' %}" class="btn btn-primary mb-3">+ Nuevo Proyecto</a>
+
+<div class="row">
+    {% for proyecto in proyectos %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ proyecto.nombre }}</h5>
+                    <p class="card-text">{{ proyecto.descripcion|truncatewords:15 }}</p>
+                    <a href="{% url 'tarea_list' proyecto.id %}" class="btn btn-sm btn-outline-primary">Ver tareas</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No tienes proyectos todavía. ¡Crea uno!</p>
+    {% endfor %}
+</div>
+{% endblock %}
